@@ -1,9 +1,9 @@
 ####contextmenu####
-*step
+* step
 ```
 yarn install / npm install
 ```
-*run
+* run
 ```
 npm run dev
 npm run server
