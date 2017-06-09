@@ -8,17 +8,24 @@
   <link rel="stylesheet" href="build/styles/index.css">
   <script src="build/index.js"></script>
   <title>Document</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
 </head>
 
 <body>
-  <button id="buttonclick" style="margin-left: 600px">click me</button>
+  <button id="buttonclick" style="position:absolute;left:50%;top: 50%">click me</button>
 </body>
 <script>
+  ContextMenu.on('itemclick', function (type, e, cmd) {
+    console.log(arguments)
+  })
   document.querySelector('#buttonclick').addEventListener('contextmenu', function (e) {
-    ContextMenu.off('itemclick')
-    ContextMenu.on('itemclick', function (type, e, cmd) {
-      console.log(arguments)
-    })
     ContextMenu.show([
       {
         text: '行',
