@@ -1,0 +1,99 @@
+.contextmenu
+    height: auto;
+    position: absolute;
+    display: none;
+    top:0px;
+    left:0px;
+    padding:1px 0;
+    ul
+        padding 0;
+        margin: 0;
+        min-width: 100px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        background: white url('images/vline.jpg?exclude') 27px repeat-y;
+        background-clip: content-box;
+        position: relative;
+        &:before
+        &:after
+            content ''
+            display: block;
+            height: 2px
+            width:80%
+            background: white;
+            margin: 0 auto;
+    li
+        cursor: default;
+        text-align: left;
+        margin: 0 1px;
+        padding: 0 1px;
+        font-size 12px;
+        line-height: 22px;
+        list-style: none;
+        position: relative;
+        ul
+            position: absolute;
+            display: none;
+            top:0;
+            z-index: 1
+            margin-top:-9999px;
+        &.swap-display-right
+            &>ul
+                right: inherit;
+                margin-left: 0px;
+                left:100%;
+                margin-top:0px;
+        &.swap-display-left
+            &>ul
+                right: 100%;
+                margin-right: 0px;
+                left:inherit;
+                margin-top:0px;
+        a
+            display: block;
+            border: 1px solid transparent;
+            position: relative;
+            padding-right:15px;
+            white-space: nowrap;
+            &:after
+            &[command]:after
+                position: absolute;
+                top:50%;
+                right:5px;
+                margin-top: -3.5px;
+                content '';
+                height: 7px;
+                width:4px;
+                display: inline-block;
+                background: url('images/arrow-right.png') no-repeat;
+            &[command]:after
+                background: none;
+            & i
+                content ''
+                width: 20px;
+                height: 21px;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 8px;
+                text-align: center;
+                font-size:0px;
+                line-height: 21px;
+                margin-top: -1px;
+                &:before
+                    content ''
+                    display: inline-block;
+                    vertical-align: middle;
+            &:hover
+                background: #fff5d4;
+                border-color: #dcac6c;
+        &:hover
+            &>ul
+                display: block;
+        &.line
+            border: 0px;
+            line-height: 1px;
+            margin: 1px 2px 1px 29px;
+            height: 1px;
+            font-size 0px;
+            background: url('images/vline.jpg?exclude') 27px repeat-x

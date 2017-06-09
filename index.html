@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="build/styles/index.css">
+  <script src="build/index.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="buttonclick" style="margin-left: 600px">click me</button>
+</body>
+<script>
+  document.querySelector('#buttonclick').addEventListener('contextmenu', function (e) {
+    ContextMenu.off('itemclick')
+    ContextMenu.on('itemclick', function (type, e, cmd) {
+      console.log(arguments)
+    })
+    ContextMenu.show([
+      {
+        text: '行',
+        items: [
+          { text: '添加行', cls: 'addRow', command: 'addRow' },
+          { text: '删除行', command: 'delRow' }
+        ]
+      },
+      {
+        text: '列',
+        items: [
+          { text: '添加列', command: 'addCell' },
+          { text: '删除列', command: 'delCell' }
+        ]
+      },
+      '-',
+      { text: '删除表格', cls: 'icon-del-table', command: 'destroy' }
+    ], e)
+  })
+
+</script>
+
+</html>
