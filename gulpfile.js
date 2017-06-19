@@ -13,6 +13,8 @@ var sourcemaps = require('gulp-sourcemaps')
 var rollupsourcemaps = require('rollup-plugin-sourcemaps')
 var uglify = require('gulp-uglify')
 
+var server = require('gulp-ss-server')
+
 gulp.task('style', function () {
   gulp
     .src(['src/styles/index.styl'])
@@ -68,5 +70,9 @@ gulp.task('dev', function () {
   })
   gulp.watch(['src/**/*.js'], function () {
     gulp.run('script')
+  })
+
+  server.run({
+    port: 3000
   })
 })

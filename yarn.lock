@@ -1039,6 +1039,12 @@ gulp-sourcemaps@^2.6.0:
     through2 "2.X"
     vinyl "1.X"
 
+gulp-ss-server@^0.0.6:
+  version "0.0.6"
+  resolved "http://r.cnpmjs.org/gulp-ss-server/download/gulp-ss-server-0.0.6.tgz#81a67ce077130994945bd5a41d0a3c0bec172a6d"
+  dependencies:
+    ss-server-base "^0.0.5"
+
 gulp-stylus@^2.6.0:
   version "2.6.0"
   resolved "http://r.cnpmjs.org/gulp-stylus/download/gulp-stylus-2.6.0.tgz#b0b7fa4db844e6ee82b1075ca9740564696083a1"
@@ -2035,7 +2041,7 @@ ss-controller@0.0.1:
   version "0.0.1"
   resolved "http://r.cnpmjs.org/ss-controller/download/ss-controller-0.0.1.tgz#7092b2c22a20dac2851b21a641924926796a19ab"
 
-ss-server-base@0.0.5:
+ss-server-base@0.0.5, ss-server-base@^0.0.5:
   version "0.0.5"
   resolved "http://r.cnpmjs.org/ss-server-base/download/ss-server-base-0.0.5.tgz#348f2c7fc56a78c4034c4feb8e28ca15f65e0da0"
   dependencies:

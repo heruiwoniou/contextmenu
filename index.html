@@ -26,24 +26,26 @@
     console.log(arguments)
   })
   document.querySelector('#buttonclick').addEventListener('contextmenu', function (e) {
-    ContextMenu.show([
-      {
-        text: '行',
-        items: [
-          { text: '添加行', cls: 'addRow', command: 'addRow' },
-          { text: '删除行', command: 'delRow' }
-        ]
-      },
-      {
-        text: '列',
-        items: [
-          { text: '添加列', command: 'addCell' },
-          { text: '删除列', command: 'delCell' }
-        ]
-      },
-      '-',
-      { text: '删除表格', cls: 'icon-del-table', command: 'destroy' }
-    ], e)
+    ContextMenu.show(
+      [
+        {
+          text: '行',
+          items: [
+            { text: '添加行', cls: 'addRow', command: 'addRow' },
+            { text: '删除行', command: 'delRow' }
+          ]
+        },
+        {
+          text: '列',
+          items:
+          [
+            { text: '删除表格', cls: 'icon-del-table', items: new Array(100).join(',').split(',').map(function (o, i) { return { text: '测测试列测试列测试列试列' + i, command: 'addCell' + i } }) }
+          ].concat(new Array(37).join(',').split(',').map(function (o, i) { return { text: '添添加列添加列添加列加列' + i, command: 'addCell' + i } }))
+        },
+        '-',
+        { text: '删除表格', cls: 'icon-del-table', command: 'destroy' }
+      ].concat(new Array(50).join(',').split(',').map(function (o, i) { return { text: '一一一级菜单一级菜单级菜单一级菜单一级菜单级菜单' + i, command: 'addCell' + i } }))
+      , e)
   })
 
 </script>
