@@ -8,44 +8,38 @@
   <link rel="stylesheet" href="build/styles/index.css">
   <script src="build/index.js"></script>
   <title>Document</title>
-  <style>
-    html,
-    body {
-      height: 100%;
-      padding: 0;
-      margin: 0;
-    }
-  </style>
 </head>
 
 <body>
-  <button id="buttonclick" style="position:absolute;left:50%;top: 50%">click me</button>
+  <button id="buttonclick" style="position:absolute;left:50%;top:50%">click me</button>
 </body>
 <script>
+  var max = 30
+  var maxdeep = 2
+  var createItems = function (deep) {
+    if (deep > maxdeep) return null
+    deep = deep || 0
+    var arr = []
+    var l = Math.round(Math.random() * max)
+    for (var i = 0; i < l; i++) {
+      var hasc = Math.random() > 0.5
+      var cl = createItems(deep + 1)
+      var n = { text: '菜单项-' + deep + '级-第' + i + '项' }
+      if (hasc && cl) {
+        n.items = cl
+      } else {
+        n.command = 'action' + deep + '-' + i
+      }
+      arr.push(n)
+    }
+    return arr
+  }
   ContextMenu.on('itemclick', function (type, e, cmd) {
     console.log(arguments)
   })
   document.querySelector('#buttonclick').addEventListener('contextmenu', function (e) {
-    ContextMenu.show(
-      [
-        {
-          text: '行',
-          items: [
-            { text: '添加行', cls: 'addRow', command: 'addRow' },
-            { text: '删除行', command: 'delRow' }
-          ]
-        },
-        {
-          text: '列',
-          items:
-          [
-            { text: '删除表格', cls: 'icon-del-table', items: new Array(100).join(',').split(',').map(function (o, i) { return { text: '测测试列测试列测试列试列' + i, command: 'addCell' + i } }) }
-          ].concat(new Array(37).join(',').split(',').map(function (o, i) { return { text: '添添加列添加列添加列加列' + i, command: 'addCell' + i } }))
-        },
-        '-',
-        { text: '删除表格', cls: 'icon-del-table', command: 'destroy' }
-      ].concat(new Array(50).join(',').split(',').map(function (o, i) { return { text: '一一一级菜单一级菜单级菜单一级菜单一级菜单级菜单' + i, command: 'addCell' + i } }))
-      , e)
+    var a = createItems()
+    ContextMenu.show(a, e)
   })
 
 </script>

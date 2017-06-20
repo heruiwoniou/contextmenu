@@ -31,6 +31,7 @@ class ContextMenu extends EventBase {
     this.max.height = document.documentElement.offsetHeight
     this.__render__(items)
     let ul = this.el.querySelector('ul')
+    dom.removeClass(this.el, 'contextmenu--scroll')
     dom.setStyle(this.el, 'left', this.x + 'px')
     dom.setStyle(this.el, 'top', this.y + 'px')
     dom.setStyle(ul, 'height', 'auto')
@@ -39,11 +40,13 @@ class ContextMenu extends EventBase {
     if (this.x + width > document.body.offsetWidth) {
       dom.setStyle(this.el, 'left', this.x - width + 'px')
     }
-    if (this.el.offsetHeight > this.max.height) {
+    if (this.el.offsetHeight - 10 > this.max.height) {
       dom.addClass(this.el, 'contextmenu--scroll')
       dom.setStyle(ul, 'height', this.max.height - 10 - this.scrollBarHeight * 2 + 'px')
       dom.setStyle(ul, 'margin', this.scrollBarHeight + 'px 0')
       dom.setStyle(this.el, 'top', '2px')
+    } else if (this.y + this.el.offsetHeight - 10 > this.max.height) {
+      dom.setStyle(this.el, 'top', (this.max.height - this.el.offsetHeight - 2) + 'px')
     }
     dom.setStyle(this.el, 'marginTop', 0)
     this.__bindListener__()
@@ -71,7 +74,15 @@ class ContextMenu extends EventBase {
     if (el.className.indexOf('contextmenu__scrollbar') === -1) return
     let up = el.classList[el.classList.length - 1] === 'contextmenu__scrollbar--top'
     let ul = up ? el.nextElementSibling : el.previousElementSibling
-    ul.scrollTop = ul.scrollTop + (up ? -1 : 1) * 10
+    var scroll = function () {
+      ul.scrollTop = ul.scrollTop + (up ? -1 : 1) * 2
+    }
+    var cleartimer = () => {
+      dom.off(document, 'mouseup', cleartimer)
+      clearInterval(this.scrollTimer)
+    }
+    dom.on(document, 'mouseup', cleartimer)
+    this.scrollTimer = setInterval(scroll)
   }
   __clickHandler__(e) {
     if (!this.container.contains(e.target)) { this.hide() } else {
@@ -104,7 +115,7 @@ class ContextMenu extends EventBase {
   }
   __bindGlobalListener__() {
     dom.on(window, 'resize', () => this.hide())
-    dom.on(document, 'click', (e) => this.__scrollBarClickHandler__(e))
+    dom.on(document, 'mousedown', (e) => this.__scrollBarClickHandler__(e))
   }
   __bindListener__() {
     this.mousewheelhandler = (e) => this.__mouseWheelHander__(e)
@@ -128,9 +139,13 @@ class ContextMenu extends EventBase {
   __clearPlaceHolder__(index = 0) {
     var arr = this.placeholder.splice(index)
     arr.reverse().forEach(placeholder => {
-      dom.setStyle(placeholder[0], 'marginTop', '')
-      placeholder[1].parentNode.insertBefore(placeholder[0], placeholder[1])
-      placeholder[1].parentNode.removeChild(placeholder[1])
+      let el = placeholder[0]
+      let span = placeholder[1]
+      dom.setStyle(el, 'marginTop', '')
+      dom.setStyle(el, 'left', '')
+      dom.setStyle(el, 'top', '')
+      span.parentNode.insertBefore(el, span)
+      span.parentNode.removeChild(span)
     })
   }
 
@@ -152,7 +167,8 @@ class ContextMenu extends EventBase {
           },
           box = {
             width: placeholder[1].parentNode.offsetWidth,
-            height: placeholder[1].parentNode.offsetHeight
+            height: placeholder[1].parentNode.offsetHeight,
+            scrollTop: placeholder[1].parentNode.parentNode.scrollTop
           },
           p = placeholder[1],
           ul = el.querySelector('ul')
@@ -163,14 +179,14 @@ class ContextMenu extends EventBase {
         if (box.width + offset.left + el.offsetWidth >= this.max.width) {
           dom.setStyle(el, 'left', offset.left - el.offsetWidth + 'px')
         } else { dom.setStyle(el, 'left', box.width + offset.left + 'px') }
-        if (el.offsetHeight > this.max.height) {
+        if (el.offsetHeight > this.max.height - 10) {
           dom.setStyle(el, 'top', '2px')
           dom.addClass(el, 'contextmenu--scroll')
           dom.setStyle(ul, 'height', this.max.height - 10 - this.scrollBarHeight * 2 + 'px')
           dom.setStyle(ul, 'margin', this.scrollBarHeight + 'px 0')
-        } else if (offset.top + el.offsetHeight - box.height > this.max.height) {
+        } else if (offset.top + el.offsetHeight - box.height - box.scrollTop > this.max.height) {
           dom.setStyle(el, 'top', this.max.height - el.offsetHeight - 2 + 'px')
-        } else { dom.setStyle(el, 'top', offset.top - box.height + 'px') }
+        } else { dom.setStyle(el, 'top', offset.top - box.height - box.scrollTop + 'px') }
       } else if (this.placeholder.length === ~~el.getAttribute('deep') && this.placeholder[this.placeholder.length - 1][0] !== el) {
         this.__clearPlaceHolder__(this.placeholder.length - 1)
         this.__setPlaceHolder__(el, true)
@@ -182,6 +198,7 @@ class ContextMenu extends EventBase {
       }
     }
   }
+
   __renderContext__(el, context, deep) {
     if (deep !== 0) {
       let sub = document.createElement('div')
@@ -237,6 +254,7 @@ class ContextMenu extends EventBase {
         last = li
       }
     }
+
     // clear start/end node
     let start, end
     while (frag.children.length !== 0) {
@@ -250,6 +268,7 @@ class ContextMenu extends EventBase {
 }
 
 let contextmenu = null
+
 export default {
   show(items, e) {
     if (contextmenu === null) contextmenu = new ContextMenu()

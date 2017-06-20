@@ -1,6 +1,12 @@
+html, body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
 .contextmenu {
   height: auto;
-  position: absolute;
+  position: fixed;
   margin-top: -99999px;
   top: 0px;
   left: 0px;
@@ -16,15 +22,6 @@
     min-width: 100px;
     background-clip: content-box;
     position: relative;
-
-    // &:before, &:after {
-    //   content: '';
-    //   display: block;
-    //   height: 2px;
-    //   width: 80%;
-    //   background: white;
-    //   margin: 0 auto;
-    // }
   }
 
   li {
