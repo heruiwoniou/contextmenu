@@ -1,5 +1,9 @@
 import dom from 'wind-dom'
+
 var width
+/**
+ * 获取滚动条宽度
+ */
 export const getScrollBarWidth = () => {
   if (width) return width
   var container = document.createElement('div')
@@ -20,4 +24,14 @@ export const getScrollBarWidth = () => {
   document.body.removeChild(container)
 
   return width
+}
+
+/**
+ *  获取数组中第一个匹配的数据索引
+ */
+export const indexOf = function (arr, searchVal) {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === searchVal) return i
+  }
+  return -1
 }

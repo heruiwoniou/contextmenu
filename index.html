@@ -11,36 +11,36 @@
 </head>
 
 <body>
-  <button id="buttonclick" style="position:absolute;left:50%;top:50%">click me</button>
+  <button id="buttonclick" style="position:absolute;left:50%;top:150%">click me</button>
 </body>
 <script>
-  var max = 30
-  var maxdeep = 2
-  var createItems = function (deep) {
-    if (deep > maxdeep) return null
-    deep = deep || 0
-    var arr = []
-    var l = Math.round(Math.random() * max)
-    for (var i = 0; i < l; i++) {
-      var hasc = Math.random() > 0.5
-      var cl = createItems(deep + 1)
-      var n = { text: '菜单项-' + deep + '级-第' + i + '项' }
-      if (hasc && cl) {
-        n.items = cl
-      } else {
-        n.command = 'action' + deep + '-' + i
+    var max = 30
+    var maxdeep = 2
+    var createItems = function (deep) {
+      if (deep > maxdeep) return null
+      deep = deep || 0
+      var arr = []
+      var l = Math.round(Math.random() * max)
+      for (var i = 0; i < l; i++) {
+        var hasc = Math.random() > 0.5
+        var cl = createItems(deep + 1)
+        var n = { text: '菜单项-' + deep + '级-第' + i + '项' }
+        if (hasc && cl) {
+          n.items = cl
+        } else {
+          n.command = 'action' + deep + '-' + i
+        }
+        arr.push(n)
       }
-      arr.push(n)
+      return arr
     }
-    return arr
-  }
-  ContextMenu.on('itemclick', function (type, e, cmd) {
-    console.log(arguments)
-  })
-  document.querySelector('#buttonclick').addEventListener('contextmenu', function (e) {
-    var a = createItems()
-    ContextMenu.show(a, e)
-  })
+    ContextMenu.on('itemclick', function (type, e, cmd) {
+      console.log(arguments)
+    })
+    document.querySelector('#buttonclick').addEventListener('contextmenu', function (e) {
+      var a = createItems()
+      ContextMenu.show(a, e)
+    })
 
 </script>
 

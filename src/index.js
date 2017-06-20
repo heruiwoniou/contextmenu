@@ -1,6 +1,6 @@
 import EventBase from './scripts/eventbase.js'
 import dom from 'wind-dom'
-import { getScrollBarWidth } from './scripts/scrollBarWidth.js'
+import { getScrollBarWidth, indexOf } from './scripts/utils.js'
 
 class ContextMenu extends EventBase {
   constructor() {
@@ -40,12 +40,13 @@ class ContextMenu extends EventBase {
     if (this.x + width > document.body.offsetWidth) {
       dom.setStyle(this.el, 'left', this.x - width + 'px')
     }
-    if (this.el.offsetHeight - 10 > this.max.height) {
+    console.log(this.el.offsetHeight, this.max.height)
+    if (this.el.offsetHeight - 4 > this.max.height) {
       dom.addClass(this.el, 'contextmenu--scroll')
       dom.setStyle(ul, 'height', this.max.height - 10 - this.scrollBarHeight * 2 + 'px')
       dom.setStyle(ul, 'margin', this.scrollBarHeight + 'px 0')
       dom.setStyle(this.el, 'top', '2px')
-    } else if (this.y + this.el.offsetHeight - 10 > this.max.height) {
+    } else if (this.y + this.el.offsetHeight - 2 > this.max.height) {
       dom.setStyle(this.el, 'top', (this.max.height - this.el.offsetHeight - 2) + 'px')
     }
     dom.setStyle(this.el, 'marginTop', 0)
@@ -74,6 +75,7 @@ class ContextMenu extends EventBase {
     if (el.className.indexOf('contextmenu__scrollbar') === -1) return
     let up = el.classList[el.classList.length - 1] === 'contextmenu__scrollbar--top'
     let ul = up ? el.nextElementSibling : el.previousElementSibling
+    this.__clearPlaceHolder__(~~el.parentNode.getAttribute('deep'))
     var scroll = function () {
       ul.scrollTop = ul.scrollTop + (up ? -1 : 1) * 2
     }
@@ -86,18 +88,28 @@ class ContextMenu extends EventBase {
   }
   __clickHandler__(e) {
     if (!this.container.contains(e.target)) { this.hide() } else {
-      var cmd
-      var target = e.target
+      let cmd
+      let target = e.target
       // 待添加上级判断
-      if (e.target.className !== 'contextmenu__item') return
-      if (target && (cmd = target.getAttribute('command'))) {
+      if (target.className !== 'contextmenu__item' && target.parentNode.className !== 'contextmenu__item') return
+      let el = target.className === 'contextmenu__item' ? target : target.parentNode
+      if (el && (cmd = el.getAttribute('command'))) {
         this.fireEvent('itemclick', e, cmd)
         this.hide()
       } else return false
     }
   }
   __mouseWheelHander__(e) {
-    if (!this.container.contains(e.target)) { this.hide() }
+    if (!this.container.contains(e.target)) { this.hide() } else {
+      let el = e.target
+      while (indexOf(el.classList, 'contextmenu') === -1) {
+        el = el.parentNode
+      }
+      if (indexOf(el.classList, 'contextmenu--scroll') === -1) return
+      let ul = el.querySelector('ul')
+      this.__clearPlaceHolder__(~~el.getAttribute('deep'))
+      ul.scrollTop -= e.wheelDelta / Math.abs(e.wheelDelta) * 10
+    }
   }
   __mouseOverHandler__(e) {
     var el = e.target || e.toElement
@@ -179,12 +191,12 @@ class ContextMenu extends EventBase {
         if (box.width + offset.left + el.offsetWidth >= this.max.width) {
           dom.setStyle(el, 'left', offset.left - el.offsetWidth + 'px')
         } else { dom.setStyle(el, 'left', box.width + offset.left + 'px') }
-        if (el.offsetHeight > this.max.height - 10) {
+        if (el.offsetHeight - 4 > this.max.height) {
           dom.setStyle(el, 'top', '2px')
           dom.addClass(el, 'contextmenu--scroll')
           dom.setStyle(ul, 'height', this.max.height - 10 - this.scrollBarHeight * 2 + 'px')
           dom.setStyle(ul, 'margin', this.scrollBarHeight + 'px 0')
-        } else if (offset.top + el.offsetHeight - box.height - box.scrollTop > this.max.height) {
+        } else if (offset.top + el.offsetHeight - box.height - box.scrollTop - 2 > this.max.height) {
           dom.setStyle(el, 'top', this.max.height - el.offsetHeight - 2 + 'px')
         } else { dom.setStyle(el, 'top', offset.top - box.height - box.scrollTop + 'px') }
       } else if (this.placeholder.length === ~~el.getAttribute('deep') && this.placeholder[this.placeholder.length - 1][0] !== el) {
@@ -267,7 +279,7 @@ class ContextMenu extends EventBase {
   }
 }
 
-let contextmenu = null
+window.contextmenu = null
 
 export default {
   show(items, e) {

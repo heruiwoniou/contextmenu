@@ -26,7 +26,7 @@ gulp.task('style', function () {
         cascade: false
       })]
     }))
-    .pipe(cleancss())
+    // .pipe(cleancss())
     .pipe(gulp.dest('build/styles/'))
 })
 
