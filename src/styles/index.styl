@@ -12,7 +12,7 @@ html, body {
   left: 0px;
   padding: 2px 0;
   border: 1px solid #cecece;
-  box-shadow: 0 1px 2px #cecece;
+  box-shadow: 0 0px 5px #cecece;
   border-radius: 3px;
   background: white url('images/vline.jpg?exclude') 27px repeat-y;
 
@@ -34,21 +34,6 @@ html, body {
     list-style: none;
     position: relative;
 
-    // &.swap-display-right {
-    // &>span {
-    // right: inherit;
-    // margin-left: 0px;
-    // left: 100%;
-    // }
-    // }
-
-    // &.swap-display-left {
-    // &>span {
-    // right: 100%;
-    // margin-right: 0px;
-    // left: inherit;
-    // }
-    // }
     & > a {
       display: block;
       border: 1px solid transparent;
@@ -82,7 +67,8 @@ html, body {
         text-align: center;
         font-size: 0px;
         line-height: 21px;
-        margin-top: -1px;
+        position: relative;
+        top: -1px;
 
         &:before {
           content: '';
@@ -95,13 +81,18 @@ html, body {
         background: #fff5d4;
         border-color: #dcac6c;
       }
+
+      &.contextmenu--disabled {
+        opacity: 0.3;
+        cursor: default;
+
+        &:hover {
+          background: transparent;
+          border-color: transparent;
+        }
+      }
     }
 
-    // &:hover {
-    // &>div {
-    // margin-top: 0px;
-    // }
-    // }
     &.contextmenu__line {
       border: 0px;
       line-height: 1px;

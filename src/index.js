@@ -113,7 +113,9 @@ class ContextMenu extends EventBase {
   }
   __mouseOverHandler__(e) {
     var el = e.target || e.toElement
-    if (el.className !== 'contextmenu__item') return
+    console.log(indexOf(el.classList, 'contextmenu__item'), indexOf(el.classList, 'contextmenu--disabled'))
+    if (indexOf(el.classList, 'contextmenu__item') === -1 ||
+      indexOf(el.classList, 'contextmenu--disabled') > -1) return
     if (!el.getAttribute('command')) {
       var parent = el.parentElement
       this.__setPlaceHolder__(parent.querySelector('.contextmenu--sub'))
@@ -249,8 +251,9 @@ class ContextMenu extends EventBase {
         icon.className = item.cls ? item.cls : ''
         text.appendChild(icon)
         text.appendChild(txt)
-        text.className = 'contextmenu__item'
+        dom.addClass(text, 'contextmenu__item')
         if (item.command) text.setAttribute('command', item.command)
+        if (item.disabled) dom.addClass(text, 'contextmenu--disabled')
         text.setAttribute('deep', deep)
         li.appendChild(text)
         if (item.items && item.items !== 0) {

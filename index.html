@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="build/styles/index.css">
   <script src="build/index.js"></script>
   <title>Document</title>
+  <style>
+    .icon-table{
+      background: url('build/styles/images/table.png') no-repeat center;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,11 +29,13 @@
       for (var i = 0; i < l; i++) {
         var hasc = Math.random() > 0.5
         var cl = createItems(deep + 1)
-        var n = { text: '菜单项-' + deep + '级-第' + i + '项' }
-        if (hasc && cl) {
-          n.items = cl
-        } else {
-          n.command = 'action' + deep + '-' + i
+        var n = (Math.random() > 0.2 ? { text: 'item-' + deep + 'level-' + i, disabled: Math.round(Math.random()) > 0.5, cls: 'icon-table' } : '-')
+        if (n !== '-') {
+          if (hasc && cl) {
+            n.items = cl
+          } else {
+            n.command = 'action' + deep + '-' + i
+          }
         }
         arr.push(n)
       }
