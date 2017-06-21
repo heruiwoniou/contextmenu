@@ -13,6 +13,16 @@ npm run server
 
 ```
 # USE
+``` css
+.icon-table{
+  background: url('build/styles/images/table.png') no-repeat center;
+}
+// or
+.icon-table:before{
+  content: '';
+  ...
+}
+```
 ``` javascript
 // listener event
 ContextMenu.on('itemclick', function (type, e, cmd) {
@@ -23,11 +33,11 @@ document.querySelector('.somedom')
   .addEventListener('contextmenu', 
     function (e) {
       ContextMenu.show([
-        { text : 'item-0', command: 'cmd-0' },
+        { text : 'item-0', command: 'cmd-0', cls: 'icon-table' },
         '-',
         { 
           text: 'item-1', items: [
-            { text: 'item-1-0', command: 'cmd-1-0' },
+            { text: 'item-1-0', command: 'cmd-1-0', disabled: true },
             { text: 'item-1-1', command: 'cmd-1-1' }
           ]
         }
