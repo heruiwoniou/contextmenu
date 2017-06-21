@@ -282,7 +282,7 @@ class ContextMenu extends EventBase {
   }
 }
 
-window.contextmenu = null
+let contextmenu = null
 
 export default {
   show(items, e) {
@@ -297,5 +297,9 @@ export default {
   off() {
     if (contextmenu === null) contextmenu = new ContextMenu()
     contextmenu.off.apply(contextmenu, arguments)
+  },
+  hide() {
+    if (contextmenu === null) return
+    contextmenu.hide()
   }
 }
