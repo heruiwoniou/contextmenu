@@ -45,3 +45,14 @@ document.querySelector('.somedom')
   })
 
 ```
+# API
+
+``` typescript
+ContextMenu.show(items: Array, e: Event): void
+ContextMenu.hide(): void
+/*
+ * currently, only itemclick event
+ */
+ContextMenu.on(event: String, hanler: Function): void
+ContextMenu.off(event: String, hanler?: Function): void
+```
